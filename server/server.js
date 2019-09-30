@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 
 
 //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-// app.use significa que es un middleware...
+// MIDDLEWARES
 //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 // parse application/x-www-form-urlencoded
@@ -32,11 +32,25 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.resolve(__dirname, '../public'))); //habilitar la carpeta public
 //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 
 
+//.......................................................
+//  Conectar a la BD Mongo
+//.......................................................
+mongoose.connect(process.env.URLDBMONGO, { useNewUrlParser: true, useUnifiedTopology: true }, (err, res) => {
+    if (err) throw err;
+
+    // console.log('Base de datos ONLINE');
+    // console.log(res);
+});
+
+
+//.......................................................
+//  Iniciar el servidor
+//.......................................................
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', process.env.PORT);
